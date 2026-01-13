@@ -14,10 +14,6 @@
 	<name>menu-api</name>
 	<description>API do Menu</description>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<modules>
-		<module>demo</module>
-	</modules>
 
 	<properties>
 		<java.version>25</java.version>
