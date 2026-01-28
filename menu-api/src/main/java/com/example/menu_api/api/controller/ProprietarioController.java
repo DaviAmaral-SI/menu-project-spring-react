@@ -1,5 +1,6 @@
 package com.example.menu_api.api.controller;
 
+import com.example.menu_api.domain.exception.NegocioException;
 import com.example.menu_api.domain.model.Proprietario;
 import com.example.menu_api.domain.repository.ProprietarioRepository;
 import com.example.menu_api.domain.service.RegistroProprietarioService;
@@ -67,4 +68,10 @@ public class ProprietarioController {
         registroProprietarioService.excluir(proprietarioId);
         return ResponseEntity.noContent().build();
     }
+
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<String> handleException(NegocioException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
 }
