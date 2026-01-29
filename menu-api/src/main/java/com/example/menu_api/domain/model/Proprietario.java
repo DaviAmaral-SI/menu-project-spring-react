@@ -1,8 +1,10 @@
 package com.example.menu_api.domain.model;
 
+import com.example.menu_api.domain.validation.ValidationGroups;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,6 +17,7 @@ import lombok.Setter;
 //@Table(name = "tb_proprietario")
 public class Proprietario {
 
+    @NotNull(groups = ValidationGroups.ProprietarioId.class)
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,13 +25,11 @@ public class Proprietario {
 
     @NotBlank
     @Size(max = 60)
-    @Column
     private String nome;
 
     @NotBlank
     @Size(max = 255)
     @Email
-    @Column
     private String email;
 
     @NotBlank
