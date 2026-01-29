@@ -13,6 +13,11 @@ public class RegistroProprietarioService {
 
     private ProprietarioRepository proprietarioRepository;
 
+    public Proprietario buscar(Long proprietarioId) {
+        return proprietarioRepository.findById(proprietarioId)
+                .orElseThrow(() -> new NegocioException("Proprietário não encontrado!"));
+    }
+
     @Transactional
     public Proprietario salvar(Proprietario proprietario){
         boolean emailEmUso = proprietarioRepository.findByEmail(proprietario.getEmail())
@@ -20,7 +25,7 @@ public class RegistroProprietarioService {
                 .isPresent();
 
         if(emailEmUso){
-            throw new NegocioException("E-mail já em uso");
+            throw new NegocioException("E-mail já em uso!");
         }
 
         return proprietarioRepository.save(proprietario);

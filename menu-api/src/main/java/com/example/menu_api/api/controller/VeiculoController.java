@@ -1,5 +1,6 @@
 package com.example.menu_api.api.controller;
 
+import com.example.menu_api.domain.exception.NegocioException;
 import com.example.menu_api.domain.model.Veiculo;
 import com.example.menu_api.domain.repository.VeiculoRepository;
 import com.example.menu_api.domain.service.RegistroVeiculoService;
@@ -34,6 +35,11 @@ public class VeiculoController {
     @ResponseStatus(HttpStatus.CREATED)
     public Veiculo cadastrar(@RequestBody Veiculo veiculo) {
         return registroVeiculoService.cadastrar(veiculo);
+    }
+
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<String> handleException(NegocioException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
 }
