@@ -69,9 +69,4 @@ public class ProprietarioController {
         return ResponseEntity.noContent().build();
     }
 
-    @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<String> handleException(NegocioException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
 }
