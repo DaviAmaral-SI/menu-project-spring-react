@@ -1,7 +1,10 @@
 package com.example.menu_api.api.exceptionhandler;
 
 import com.example.menu_api.domain.exception.NegocioException;
+import lombok.AllArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -15,16 +18,21 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private final MessageSource messageSource;
+
     @Override
-    protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                             HttpHeaders headers, HttpStatusCode status,
                                                                             WebRequest request) {
+
         ProblemDetail problemDetail = ProblemDetail.forStatus(status);
         problemDetail.setTitle("Um ou mais campos estão inválidos!");
         problemDetail.setType(URI.create("https://example.com/erros/campos-invalidos"));
@@ -33,7 +41,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .stream()
                 .collect(Collectors.toMap(
                         objectError -> ((FieldError)objectError).getField(),
-                        DefaultMessageSourceResolvable::getDefaultMessage));
+                        objectError -> messageSource.getMessage(objectError, LocaleContextHolder.getLocale())));
 
         problemDetail.setProperty("fields", fields);
 
