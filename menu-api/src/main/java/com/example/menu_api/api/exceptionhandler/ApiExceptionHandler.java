@@ -6,10 +6,8 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.*;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,8 +47,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<String> capturar(NegocioException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    public ProblemDetail handleNegocio(NegocioException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle(ex.getMessage());
+        problemDetail.setType(URI.create("https://example.com/erros/regra-de-negocio"));
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ProblemDetail handleDataIntegrity(DataIntegrityViolationException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problemDetail.setTitle("Recurso está em uso!");
+        problemDetail.setType(URI.create("https://example.com/erros/recurso-em-uso"));
+
+        return problemDetail;
     }
 
 }
