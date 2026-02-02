@@ -1,5 +1,6 @@
 package com.example.menu_api.api.controller;
 
+import com.example.menu_api.api.model.VeiculoModel;
 import com.example.menu_api.domain.exception.NegocioException;
 import com.example.menu_api.domain.model.Veiculo;
 import com.example.menu_api.domain.repository.VeiculoRepository;
@@ -26,8 +27,20 @@ public class VeiculoController {
     }
 
     @GetMapping("/{veiculoId}")
-    public ResponseEntity<Veiculo> buscar(@PathVariable Long veiculoId) {
+    public ResponseEntity<VeiculoModel> buscar(@PathVariable Long veiculoId) {
         return veiculoRepository.findById(veiculoId)
+                .map(veiculo -> {
+                    var veiculoModel = new VeiculoModel();
+                    veiculoModel.setId(veiculo.getId());
+                    veiculoModel.setNomeProprietario(veiculo.getProprietario().getNome());
+                    veiculoModel.setMarca(veiculo.getMarca());
+                    veiculoModel.setModelo(veiculo.getModelo());
+                    veiculoModel.setPlaca(veiculo.getPlaca());
+                    veiculoModel.setStatus(veiculo.getStatus());
+                    veiculoModel.setDataCadastro(veiculo.getDataCadastro());
+                    veiculoModel.setDataApreensao(veiculo.getDataApreensao());
+                    return veiculoModel;
+                })
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
