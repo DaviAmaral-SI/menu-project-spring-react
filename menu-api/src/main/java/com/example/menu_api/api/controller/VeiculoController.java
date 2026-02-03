@@ -2,6 +2,7 @@ package com.example.menu_api.api.controller;
 
 import com.example.menu_api.api.assembler.VeiculoAssembler;
 import com.example.menu_api.api.model.VeiculoModel;
+import com.example.menu_api.api.model.input.VeiculoInput;
 import com.example.menu_api.domain.model.Veiculo;
 import com.example.menu_api.domain.repository.VeiculoRepository;
 import com.example.menu_api.domain.service.RegistroVeiculoService;
@@ -37,8 +38,12 @@ public class VeiculoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public VeiculoModel cadastrar(@Valid @RequestBody Veiculo veiculo) {
-        return veiculoAssembler.toModel(registroVeiculoService.cadastrar(veiculo));
+    public VeiculoModel cadastrar(@Valid @RequestBody VeiculoInput veiculoInput) {
+        Veiculo novoVeiculo = veiculoAssembler.toEntity(veiculoInput);
+        Veiculo veiculoCadastrado = registroVeiculoService.cadastrar(novoVeiculo);
+
+        return veiculoAssembler.toModel(veiculoCadastrado);
+//        return veiculoAssembler.toModel(registroVeiculoService.cadastrar(veiculo));
     }
 
 }
