@@ -14,7 +14,7 @@ public class VeiculoModel {
     private String nomeProprietario;
     private String modelo;
     private String marca;
-    private String placa;
+    private String numeroPlaca;
     private StatusVeiculo status;
     private OffsetDateTime dataCadastro;
     private OffsetDateTime dataApreensao;
