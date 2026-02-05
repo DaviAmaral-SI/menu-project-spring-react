@@ -17,6 +17,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -60,5 +61,8 @@ public class Veiculo {
 
     @JsonProperty(access = Access.READ_ONLY)
     private OffsetDateTime dataApreensao;
+
+    @OneToMany(mappedBy = "veiculo")
+    private List<Autuacao> autuacoes;
 
 }
