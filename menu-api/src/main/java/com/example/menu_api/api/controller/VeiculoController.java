@@ -43,7 +43,6 @@ public class VeiculoController {
         Veiculo veiculoCadastrado = registroVeiculoService.cadastrar(novoVeiculo);
 
         return veiculoAssembler.toModel(veiculoCadastrado);
-//        return veiculoAssembler.toModel(registroVeiculoService.cadastrar(veiculo));
     }
 
 }
