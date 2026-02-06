@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 @Service
 public class RegistroVeiculoService {
 
-    private VeiculoRepository veiculoRepository;
+    private final VeiculoRepository veiculoRepository;
     private final RegistroProprietarioService registroProprietarioService;
 
     public Veiculo buscar(Long veiculoId){
